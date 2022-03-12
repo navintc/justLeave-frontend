@@ -1,9 +1,15 @@
 import logo from './logo.svg';
 import './App.css';
 
+import TopNavbar from "./components/topNavbar/topNavbar";
+
+import Footer from "./components/footer/footer";
+import topNavbar from "./components/topNavbar/topNavbar";
+import ApprovedLeaves from "./pages/approvedLeaves/approvedLeaves";
+
 function App() {
   return (
-    <div className="App">
+    <div className="">
       {/*<header className="App-header">*/}
       {/*  <img src={logo} className="App-logo" alt="logo" />*/}
       {/*  <p>*/}
@@ -19,6 +25,9 @@ function App() {
       {/*  </a>*/}
       {/*</header>*/}
 
+      <TopNavbar/>
+        <ApprovedLeaves/>
+      <Footer/>
 
     </div>
   );

@@ -1,7 +1,13 @@
 .App {
   text-align: center;
 }
+.content-space{
+  margin-top: 2rem;
+}
 
+.main-component{
+  min-height: 80vh;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
