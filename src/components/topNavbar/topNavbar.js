@@ -10,11 +10,9 @@ const TopNavbar = (props) => {
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <div class={"col"}></div>
-                        <Nav
-                            className="me-auto my-2 my-lg-0"
-                            style={{ maxHeight: '100px' }}
-                            navbarScroll
-                        >
+                        <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }}
+                            navbarScroll>
+
                             <Nav.Link href="#action1">Home</Nav.Link>
                             <Nav.Link href="#action2">Pending Leaves</Nav.Link>
                             <Nav.Link href="#action3">Rejected Leaves</Nav.Link>
@@ -23,15 +21,6 @@ const TopNavbar = (props) => {
                             <Nav.Link href="#action6">Sign Out</Nav.Link>
 
                         </Nav>
-                        {/*<Form className="">*/}
-                        {/*    <FormControl*/}
-                        {/*        type="search"*/}
-                        {/*        placeholder="Search"*/}
-                        {/*        className="me-2"*/}
-                        {/*        aria-label="Search"*/}
-                        {/*    />*/}
-                        {/*    <Button variant="outline-success">Search</Button>*/}
-                        {/*</Form>*/}
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
