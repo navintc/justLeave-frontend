@@ -6,6 +6,7 @@ import TopNavbar from "./components/topNavbar/topNavbar";
 import Footer from "./components/footer/footer";
 import topNavbar from "./components/topNavbar/topNavbar";
 import ApprovedLeaves from "./pages/approvedLeaves/approvedLeaves";
+import Signin from "./pages/signin/signin";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
       {/*</header>*/}
 
       <TopNavbar/>
-        <ApprovedLeaves/>
+        <Signin />
       <Footer/>
 
     </div>
