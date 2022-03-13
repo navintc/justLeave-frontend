@@ -7,9 +7,16 @@ import {LEAVE_APPROVED, LEAVE_SHORT, LEAVE_FULLDAY, LEAVE_SICK} from "../../conf
 
 const baseURL = GET_ALL_LEAVE_DATA;
 
+
+
 const ApprovedLeaves = (props) => {
+
     // Axios calls ----------------------------------------------------------------------------
     const [leaves, setLeaves] = React.useState(null);
+    const [leavesTaken, setLeavesTaken] = React.useState(0);
+
+
+
 
     React.useEffect(() => {
         axios.get(baseURL).then((response) => {
@@ -18,7 +25,19 @@ const ApprovedLeaves = (props) => {
     }, []);
 
     if (!leaves) return null;
-    console.log(leaves);
+
+
+    // const leavesTakenCalculator = () => {
+    //     let k = 0;
+    //     for (let item of leaves){
+    //         if (item.status == LEAVE_APPROVED){
+    //             k+=1;
+    //         };
+    //     };
+    //     setLeavesTaken(k);
+    // };
+
+
     // Axios calls ----------------------------------------------------------------------------
 
     return(
@@ -45,19 +64,21 @@ const ApprovedLeaves = (props) => {
                                         <th>User ID</th>
                                         <th>Leave Type</th>
                                         <th>Leave Date</th>
-                                        <th>Leaves Taken</th>
+                                        {/*<th>Leaves Taken</th>*/}
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {leaves.map((item, index)=>
                                         <>
+                                            {/*{leavesTakenCalculator()}*/}
                                         {item.status == LEAVE_APPROVED ? (
-                                        <tr>
+                                        <tr key = {item.id}>
                                             <td>{item.leaveID}</td>
                                             <td>{item.userID}</td>
                                             <td>{item.leaveType == LEAVE_SHORT ? ("Short Leave") : item.leaveType == LEAVE_SICK ? ("Sick Leave") : ("Leave")}</td>
                                             <td>{item.leaveDate}</td>
-                                            <td>{item.leaveID}</td>
+
+                                            {/*<td>{leavesTaken}</td>*/}
                                             {/*calculate this*/}
 
                                         </tr>
