@@ -2,7 +2,8 @@ import React, { useEffect, useState }  from "react";
 import {Col, Container, Row, Table, Button, Form, FormControl} from "react-bootstrap";
 import axios from "axios";
 import {GET_ALL_LEAVE_DATA} from "../../configs/api-config";
-import {LEAVE_APPROVED} from "../../configs/notedowns-config";
+import {LEAVE_APPROVED, LEAVE_SHORT, LEAVE_FULLDAY, LEAVE_SICK} from "../../configs/notedowns-config";
+
 
 const baseURL = GET_ALL_LEAVE_DATA;
 
@@ -54,7 +55,7 @@ const ApprovedLeaves = (props) => {
                                         <tr>
                                             <td>{item.leaveID}</td>
                                             <td>{item.userID}</td>
-                                            <td>{item.leaveType}</td>
+                                            <td>{item.leaveType == LEAVE_SHORT ? ("Short Leave") : item.leaveType == LEAVE_SICK ? ("Sick Leave") : ("Leave")}</td>
                                             <td>{item.leaveDate}</td>
                                             <td>{item.leaveID}</td>
                                             {/*calculate this*/}
