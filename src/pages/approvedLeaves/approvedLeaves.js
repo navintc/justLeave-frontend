@@ -1,8 +1,10 @@
 import React, { useEffect, useState }  from "react";
 import {Col, Container, Row, Table, Button, Form, FormControl} from "react-bootstrap";
 import axios from "axios";
+import {GET_ALL_LEAVE_DATA} from "../../configs/api-config";
+import {LEAVE_APPROVED} from "../../configs/notedowns-config";
 
-const baseURL = "http://127.0.0.1:8000/api/leaves/";
+const baseURL = GET_ALL_LEAVE_DATA;
 
 const ApprovedLeaves = (props) => {
     // Axios calls ----------------------------------------------------------------------------
@@ -47,6 +49,8 @@ const ApprovedLeaves = (props) => {
                                     </thead>
                                     <tbody>
                                     {leaves.map((item, index)=>
+                                        <>
+                                        {item.status == LEAVE_APPROVED ? (
                                         <tr>
                                             <td>{item.leaveID}</td>
                                             <td>{item.userID}</td>
@@ -54,7 +58,10 @@ const ApprovedLeaves = (props) => {
                                             <td>{item.leaveDate}</td>
                                             <td>{item.leaveID}</td>
                                             {/*calculate this*/}
+
                                         </tr>
+                                        ) : null}
+                                        </>
                                     )}
                                     </tbody>
                                 </Table>
