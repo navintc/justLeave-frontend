@@ -4,7 +4,6 @@ import './App.css';
 import TopNavbar from "./components/topNavbar/topNavbar";
 
 import Footer from "./components/footer/footer";
-import topNavbar from "./components/topNavbar/topNavbar";
 import ApprovedLeaves from "./pages/approvedLeaves/approvedLeaves";
 
 function App() {
@@ -26,7 +25,7 @@ function App() {
       {/*</header>*/}
 
       <TopNavbar/>
-        <ApprovedLeaves/>
+      <ApprovedLeaves/>
       <Footer/>
 
     </div>
