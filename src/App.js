@@ -27,7 +27,7 @@ function App() {
       {/*</header>*/}
 
       <TopNavbar/>
-        <ApprovedLeaves />
+        <Signin />
       <Footer/>
 
     </div>
