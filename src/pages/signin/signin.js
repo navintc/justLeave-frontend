@@ -1,10 +1,13 @@
-import React, { useEffect, useState }  from "react";
+import React, { useEffect, useState, useCallback }  from "react";
 import axios from "axios";
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import { useSelector, useDispatch } from 'react-redux';
 import {setUserID} from "../../redux/slices/userid";
 import {setUserName} from "../../redux/slices/username";
 import {setUserType} from "../../redux/slices/usertype";
+import {HR_MANAGER, EMPLOYEE} from "../../configs/notedowns-config";
+import {useNavigate} from 'react-router-dom';
+import {USER_LOGIN} from "../../configs/api-config";
 
 const baseURL = "http://127.0.0.1:8000/api/leaves/";
 
@@ -12,60 +15,51 @@ const Signin = (props) => {
     const [leaves, setLeaves] = React.useState(null);
     const [loginReturn, setLoginReturn] = React.useState(null);
     const dispatch = useDispatch()
-    // dispatch(setUserID("hm"));
-    const userid = useSelector((state) => state.userid.value)
-
-    React.useEffect(() => {
-        axios.get(baseURL).then((response) => {
-            setLeaves(response.data);
-        });
-
-    }, []);
 
 
-    // {
-    //     "data": {
-    //         "id": 1,
-    //         "userID": "SX0001",
-    //         "name": "Bileka Karunarathne",
-    //         "email": "bileka@bileka.com",
-    //         "email_verified_at": null,
-    //         "userType": 0,
-    //         "created_at": null,
-    //         "updated_at": null
-    //     }
-    // }
+    //in-function react router links
+    const navigate = useNavigate();
+    const HRLink = useCallback(() => navigate('/pendingleaves', {replace: true}), [navigate]);
+    const EmployeeLink = useCallback(() => navigate('/userhome', {replace: true}), [navigate]);
 
+    const checkUserCredentials = event => {
+        // Prevent page from reloading
+        event.preventDefault()
 
-    if (!leaves) return null;
-    console.log(leaves);
+        //getting & holding form data
+        var emailHolder = event.target.elements.formBasicEmail.value
+        var pwrdHolder = event.target.elements.formBasicPassword.value
 
-    const checkUserCredentials = () => {
-        const userRequestData = { email: "bileka@bileka.com", password: "password"} ;
-        axios.post('http://127.0.0.1:8000/api/login', userRequestData)
+        //Creating a object with email & password to post
+        const userRequestData = { email: emailHolder, password: pwrdHolder};
+
+        axios.post(USER_LOGIN, userRequestData)
             .then(response => {
+
+                //saving the response in to a state
                 setLoginReturn(response);
 
-                console.log("loginReturn2  ", loginReturn.data);
-                console.log("loginReturn2  ", loginReturn.data.data.userType);
-                //let k = loginReturn.data.map(contentData => Object.keys(contentData.name));
+                //saving data into react redux slices
                 dispatch(setUserName(loginReturn.data.data.name));
                 dispatch(setUserID(loginReturn.data.data.userID));
                 dispatch(setUserType(loginReturn.data.data.userType));
 
-
+                //checking the user type and redirecting to the pages
+                if (loginReturn.data.data.userType == HR_MANAGER){
+                    HRLink();
+                } else if (loginReturn.data.data.userType == EMPLOYEE) {
+                    EmployeeLink();
+                }
             });
-
-        dispatch(setUserID("Amor amor sagor"))
     }
 
     return (
         <div class={"content-space main-component"}>
             <Container class={"my-auto"}>
-                {userid}
+
                 <Row className="justify-content-md-center">
                     <Col xs={3}>
-                        <Form>
+                        <Form  onSubmit={(e ) => checkUserCredentials(e)}>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Email address</Form.Label>
                                 <Form.Control type="email" placeholder="Enter email" />
@@ -74,7 +68,7 @@ const Signin = (props) => {
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" placeholder="Password" />
                             </Form.Group>
-                            <Button variant="primary" onClick={() => checkUserCredentials()}>
+                            <Button variant="primary" type="submit">
                                 Submit
                             </Button>
                         </Form>

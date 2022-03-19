@@ -5,30 +5,32 @@ import TopNavbar from "./components/topNavbar/topNavbar";
 
 import Footer from "./components/footer/footer";
 import topNavbar from "./components/topNavbar/topNavbar";
-import ApprovedLeaves from "./pages/approvedLeaves/approvedLeaves";
 import Signin from "./pages/signin/signin";
+import UserHome from "./pages/userHome/userHome";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+} from "react-router-dom";
+import PendingLeaves from "./pages/pendingLeaves/pendingLeaves";
+import ApprovedLeaves from "./pages/approvedLeaves/approvedLeaves";
+import RejectedLeaves from "./pages/rejectedLeaves/rejectedLeaves";
 
 function App() {
   return (
     <div className="">
-      {/*<header className="App-header">*/}
-      {/*  <img src={logo} className="App-logo" alt="logo" />*/}
-      {/*  <p>*/}
-      {/*    Edit <code>src/App.js</code> and save to reload.*/}
-      {/*  </p>*/}
-      {/*  <a*/}
-      {/*    className="App-link"*/}
-      {/*    href="https://reactjs.org"*/}
-      {/*    target="_blank"*/}
-      {/*    rel="noopener noreferrer"*/}
-      {/*  >*/}
-      {/*    Learn React*/}
-      {/*  </a>*/}
-      {/*</header>*/}
 
-      <TopNavbar/>
-        <Signin />
-      <Footer/>
+      <BrowserRouter>
+          <TopNavbar/>
+          <Routes>
+              <Route path="/" element={<Signin />} />
+              <Route path="/userhome" element={<UserHome />} />
+              <Route path="/pendingleaves" element={<PendingLeaves />} />
+              <Route path="/approvedleaves" element={<ApprovedLeaves />} />
+              <Route path="/rejectedleaves" element={<RejectedLeaves />} />
+          </Routes>
+          <Footer/>
+      </BrowserRouter>
 
     </div>
   );
