@@ -1,24 +1,34 @@
 import React, { useEffect, useState }  from "react";
 import {Container, Navbar, Nav, NavDropdown, Button, Form, FormControl} from "react-bootstrap";
+import {HR_MANAGER} from "../../configs/notedowns-config";
+import {useSelector} from "react-redux";
+import {Link} from "react-router-dom";
+
 
 const TopNavbar = (props) => {
+    const usertype = useSelector((state) => state.usertype.value)
+
     return(
         <div>
             <Navbar bg="light" expand="lg">
                 <Container fluid>
+
                     <Navbar.Brand href="#">justLeave</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
                         <div class={"col"}></div>
                         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }}
                             navbarScroll>
+                            {usertype == HR_MANAGER ? (
+                                <>
+                                <Nav.Link><Link to="/pendingleaves" style ={{textDecoration:"none"}}>Pending Leaves</Link></Nav.Link>
+                                <Nav.Link><Link to="/rejectedleaves" style ={{textDecoration:"none"}}>Rejected Leaves</Link></Nav.Link>
+                                <Nav.Link><Link to="/approvedleaves" style ={{textDecoration:"none"}}>Approved Leaves</Link></Nav.Link>
+                                </>
+                            ) : (<Nav.Link><Link to="/userhome" style ={{textDecoration:"none"}}>Home</Link></Nav.Link>)}
 
-                            <Nav.Link href="#action1">Home</Nav.Link>
-                            <Nav.Link href="#action2">Pending Leaves</Nav.Link>
-                            <Nav.Link href="#action3">Rejected Leaves</Nav.Link>
-                            <Nav.Link href="#action4">Approved Leaves</Nav.Link>
-                            <Nav.Link href="#action5">Help</Nav.Link>
-                            <Nav.Link href="#action6">Sign Out</Nav.Link>
+                            <Nav.Link>Help</Nav.Link>
+                            <Nav.Link><Link to="/" style ={{textDecoration:"none"}}>Sign Out</Link></Nav.Link>
 
                         </Nav>
                     </Navbar.Collapse>
