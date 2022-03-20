@@ -1,46 +1,58 @@
 import React, { useEffect, useState }  from "react";
-import {Col, Container, Row, Table, Button, Form, FormControl, Dropdown} from "react-bootstrap";
-import axios from "axios";
-import {GET_ALL_LEAVE_DATA} from "../../configs/api-config";
-import {LEAVE_APPROVED, LEAVE_SHORT, LEAVE_FULLDAY, LEAVE_SICK} from "../../configs/notedowns-config";
+import {Col, Container, Row, Table, Button, Form} from "react-bootstrap";
+import {
+    LEAVE_APPROVED,
+    LEAVE_SHORT,
+
+    LEAVE_SICK,
+    LEAVE_REJECTED,
+} from "../../configs/notedowns-config";
 import {useSelector} from "react-redux";
+import {getAllLeaveData, requestNewLeave} from "./actions";
 
+const UserHome = ({state}) => {
 
-const baseURL = GET_ALL_LEAVE_DATA;
+    const [leaves, setLeaves] = useState([]);
+    const [leaveAdded, setLeaveAdded] = useState();
+    const username = useSelector((state) => state.username.value)
+    const userid = useSelector((state) => state.userid.value)
 
+    const getAllLeaves = async () => {
+        const res = await getAllLeaveData();
+        if (res && res.data)  {
+            setLeaves(res.data);
+        }
+        else{
+            setLeaves([]);
+        }
+    }
 
-
-const UserHome = (props) => {
-
-    // Axios calls ----------------------------------------------------------------------------
-    const [leaves, setLeaves] = React.useState(null);
-    const [leavesTaken, setLeavesTaken] = React.useState(0);
-    const userid = useSelector((state) => state.username.value)
-
-
-
-
-    React.useEffect(() => {
-        axios.get(baseURL).then((response) => {
-            setLeaves(response.data);
-        });
+    useEffect(() => {
+        getAllLeaves().finally();
     }, []);
 
-    if (!leaves) return null;
+    const requestLeave = async (event) => {
+        // Prevent page from reloading
+        event.preventDefault();
 
+        const leaveType = event.target.elements.formLeaveType.value;
+        const leaveDate = event.target.elements.formLeaveDate.value;
 
-    // const leavesTakenCalculator = () => {
-    //     let k = 0;
-    //     for (let item of leaves){
-    //         if (item.status == LEAVE_APPROVED){
-    //             k+=1;
-    //         };
-    //     };
-    //     setLeavesTaken(k);
-    // };
+        if (!leaveType || !leaveDate){
+            // TODO: check validation
+            console.log("Invalid input data");
+            return null;
+        }
 
+        //Creating a object with email & password to post
+        const userLeaveData = { userID: userid, leaveType: leaveType, leaveDate: leaveDate};
 
-    // Axios calls ----------------------------------------------------------------------------
+        // Axios calls ----------------------------------------------------------------------------
+        await requestNewLeave(userLeaveData);
+        await getAllLeaves();
+
+    }
+
 
     return(
         <div class={"content-space main-component"}>
@@ -51,14 +63,13 @@ const UserHome = (props) => {
                         {/*topic*/}
                         <Row>
                             <div>
-                                <h1>{userid}</h1>
+                                <h1>{username}</h1>
                                 <p>Welcome back Hero!</p>
                             </div>
                         </Row>
 
                         <Row className="justify-content-md-center block-example border border-dark">
                             <Col className="text-center">
-
                                 <h1>6</h1>
                                 <p>Remaining Leaves</p>
                             </Col>
@@ -81,7 +92,7 @@ const UserHome = (props) => {
                         </Row>
 
 
-                        <div className={"content-space"}></div>
+                        <div className={"content-space"}/>
 
                         {/*second boxes*/}
                         <Row className="justify-content-md-center">
@@ -92,9 +103,9 @@ const UserHome = (props) => {
                                     <Row className="justify-content-md-center">
 
                                         <Col xs={6} md={10}>
-                                            <div className={"content-space"}></div>
+                                            <div className={"content-space"}/>
                                             <p>Leave Type</p>
-                                            <Form>
+                                            <Form onSubmit={(e ) => requestLeave(e)}>
                                                 <Form.Group className="mb-3" controlId="formLeaveType">
                                                     <Form.Select aria-label="Default select">
                                                         <option>Select Leave Type</option>
@@ -109,6 +120,7 @@ const UserHome = (props) => {
                                                     <Form.Control type="date" placeholder="Enter date" />
                                                     <Form.Text className="text-muted">
                                                         Please note that there's high chance of requests getting declined if they are not requested before 3 days.
+                                                        {leaveAdded && "Leave Requested Successfully"}
                                                     </Form.Text>
                                                 </Form.Group>
 
@@ -141,21 +153,21 @@ const UserHome = (props) => {
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {leaves.map((item, index)=>
+                                            {leaves.map((item)=>
                                                 <>
                                                     {/*{leavesTakenCalculator()}*/}
-                                                    {item.status == LEAVE_APPROVED ? (
+                                                    {item.userID === userid && (
                                                         <tr key = {item.id}>
-                                                            <td>{item.leaveID}</td>
-                                                            <td>{item.userID}</td>
-                                                            <td>{item.leaveType == LEAVE_SHORT ? ("Short Leave") : item.leaveType == LEAVE_SICK ? ("Sick Leave") : ("Leave")}</td>
+                                                            <td>LX0{item.id}</td>
+                                                            <td>{item.leaveType === LEAVE_SHORT ? ("Short Leave") : item.leaveType === LEAVE_SICK ? ("Sick Leave") : ("Leave")}</td>
                                                             <td>{item.leaveDate}</td>
+                                                            <td>{item.status === LEAVE_APPROVED ? ("Approved") : item.status === LEAVE_REJECTED ? ("Rejected") : ("Pending")}</td>
 
                                                             {/*<td>{leavesTaken}</td>*/}
                                                             {/*calculate this*/}
 
                                                         </tr>
-                                                    ) : null}
+                                                    )}
                                                 </>
                                             )}
                                             </tbody>
@@ -178,3 +190,6 @@ const UserHome = (props) => {
 }
 
 export default UserHome;
+
+
+

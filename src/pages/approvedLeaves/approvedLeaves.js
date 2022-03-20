@@ -2,43 +2,21 @@ import React, { useEffect, useState }  from "react";
 import {Col, Container, Row, Table, Button, Form, FormControl} from "react-bootstrap";
 import axios from "axios";
 import {GET_ALL_LEAVE_DATA} from "../../configs/api-config";
-import {LEAVE_APPROVED, LEAVE_SHORT, LEAVE_FULLDAY, LEAVE_SICK} from "../../configs/notedowns-config";
-
-
-const baseURL = GET_ALL_LEAVE_DATA;
-
-
+import {LEAVE_APPROVED, LEAVE_SHORT, LEAVE_FULL_DAY, LEAVE_SICK} from "../../configs/notedowns-config";
 
 const ApprovedLeaves = (props) => {
 
     // Axios calls ----------------------------------------------------------------------------
-    const [leaves, setLeaves] = React.useState(null);
-    const [leavesTaken, setLeavesTaken] = React.useState(0);
+    const [leaves, setLeaves] = useState(null);
+    const [leavesTaken, setLeavesTaken] = useState(0);
 
-
-
-
-    React.useEffect(() => {
-        axios.get(baseURL).then((response) => {
+    useEffect(() => {
+        axios.get(GET_ALL_LEAVE_DATA).then((response) => {
             setLeaves(response.data);
         });
     }, []);
 
     if (!leaves) return null;
-
-
-    // const leavesTakenCalculator = () => {
-    //     let k = 0;
-    //     for (let item of leaves){
-    //         if (item.status == LEAVE_APPROVED){
-    //             k+=1;
-    //         };
-    //     };
-    //     setLeavesTaken(k);
-    // };
-
-
-    // Axios calls ----------------------------------------------------------------------------
 
     return(
         <div class={"content-space main-component"}>
@@ -73,8 +51,8 @@ const ApprovedLeaves = (props) => {
                                             {/*{leavesTakenCalculator()}*/}
                                         {item.status == LEAVE_APPROVED ? (
                                         <tr key = {item.id}>
-                                            <td>{item.leaveID}</td>
-                                            <td>{item.userID}</td>
+                                            <td>LX0{item.id}</td>
+                                            <td>UX0{item.userID}</td>
                                             <td>{item.leaveType == LEAVE_SHORT ? ("Short Leave") : item.leaveType == LEAVE_SICK ? ("Sick Leave") : ("Leave")}</td>
                                             <td>{item.leaveDate}</td>
 

@@ -9,8 +9,6 @@ import {HR_MANAGER, EMPLOYEE} from "../../configs/notedowns-config";
 import {useNavigate} from 'react-router-dom';
 import {USER_LOGIN} from "../../configs/api-config";
 
-const baseURL = "http://127.0.0.1:8000/api/leaves/";
-
 const Signin = (props) => {
     const [leaves, setLeaves] = React.useState(null);
     const [loginReturn, setLoginReturn] = React.useState(null);
@@ -41,7 +39,7 @@ const Signin = (props) => {
 
                 //saving data into react redux slices
                 dispatch(setUserName(loginReturn.data.data.name));
-                dispatch(setUserID(loginReturn.data.data.userID));
+                dispatch(setUserID(loginReturn.data.data.id));
                 dispatch(setUserType(loginReturn.data.data.userType));
 
                 //checking the user type and redirecting to the pages
