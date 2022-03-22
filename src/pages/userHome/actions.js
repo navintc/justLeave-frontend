@@ -18,3 +18,21 @@ export const requestNewLeave = async (userLeaveData) => {
         console.log(e);
     }
 }
+
+//calculations
+export const remLeaves = async (leaves) => {
+    console.log("-------------------------------------------------------------", leaves);
+    return 69;
+}
+
+export const takLeaves = async () => {
+    return 69;
+}
+
+export const sicLeaves = async () => {
+    return 69;
+}
+
+export const shoLeaves = async () => {
+    return 69;
+}

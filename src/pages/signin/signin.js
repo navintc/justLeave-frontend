@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import {setUserID} from "../../redux/slices/userid";
 import {setUserName} from "../../redux/slices/username";
 import {setUserType} from "../../redux/slices/usertype";
-import {HR_MANAGER, EMPLOYEE} from "../../configs/notedowns-config";
-import {useNavigate} from 'react-router-dom';
+import {HR_MANAGER, EMPLOYEE, UNASSIGNED} from "../../configs/notedowns-config";
+import {Link, useNavigate} from 'react-router-dom';
 import {USER_LOGIN} from "../../configs/api-config";
 
 const Signin = (props) => {
@@ -19,6 +19,9 @@ const Signin = (props) => {
     const navigate = useNavigate();
     const HRLink = useCallback(() => navigate('/pendingleaves', {replace: true}), [navigate]);
     const EmployeeLink = useCallback(() => navigate('/userhome', {replace: true}), [navigate]);
+
+    //changing user type UNASSIGNED to hide navbar content
+    dispatch(setUserType(UNASSIGNED));
 
     const checkUserCredentials = event => {
         // Prevent page from reloading
@@ -70,6 +73,7 @@ const Signin = (props) => {
                                 Submit
                             </Button>
                         </Form>
+                        <p>Dont have an account yet? <Link to="/signup" >Sign Up now.</Link></p>
 
                     </Col>
                 </Row>

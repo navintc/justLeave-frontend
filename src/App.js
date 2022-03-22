@@ -15,6 +15,7 @@ import {
 import PendingLeaves from "./pages/pendingLeaves/pendingLeaves";
 import ApprovedLeaves from "./pages/approvedLeaves/approvedLeaves";
 import RejectedLeaves from "./pages/rejectedLeaves/rejectedLeaves";
+import Signup from "./pages/signup/signup";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/pendingleaves" element={<PendingLeaves />} />
               <Route path="/approvedleaves" element={<ApprovedLeaves />} />
               <Route path="/rejectedleaves" element={<RejectedLeaves />} />
+              <Route path="/signup" element={<Signup />} />
           </Routes>
           <Footer/>
       </BrowserRouter>

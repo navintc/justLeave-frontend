@@ -11,3 +11,4 @@ export const LEAVE_FULL_DAY = 3;
 //userTypes
 export const HR_MANAGER = 0;
 export const EMPLOYEE = 1;
+export const UNASSIGNED = 100;

@@ -8,12 +8,18 @@ import {
     LEAVE_REJECTED,
 } from "../../configs/notedowns-config";
 import {useSelector} from "react-redux";
-import {getAllLeaveData, requestNewLeave} from "./actions";
+import {getAllLeaveData, remLeaves, requestNewLeave, takLeaves, sicLeaves, shoLeaves} from "./actions";
 
 const UserHome = ({state}) => {
 
     const [leaves, setLeaves] = useState([]);
     const [leaveAdded, setLeaveAdded] = useState();
+
+    const [remainingLeaves, setRemainingLeaves] = useState();
+    const [takenLeaves, setTakenLeaves] = useState();
+    const [sickLeaves, setSickLeaves] = useState();
+    const [shortLeaves, setShortLeaves] = useState();
+
     const username = useSelector((state) => state.username.value)
     const userid = useSelector((state) => state.userid.value)
 
@@ -21,6 +27,35 @@ const UserHome = ({state}) => {
         const res = await getAllLeaveData();
         if (res && res.data)  {
             setLeaves(res.data);
+
+            let k;
+            let approvedCount =0;
+            let sickCount = 0;
+            let shortCount = 0;
+            for (k in leaves){
+
+                //remaining Counter
+                if (leaves[k].status == LEAVE_APPROVED && leaves[k].userID == userid && leaves[k].leaveType !== LEAVE_SICK && leaves[k].leaveType !== LEAVE_SHORT){
+                    console.log("userid:", leaves[k].userID);
+                    approvedCount +=1;
+                }
+
+                //sick Counter
+                if (leaves[k].status == LEAVE_APPROVED && leaves[k].userID == userid && leaves[k].leaveType == LEAVE_SICK){
+                    sickCount += 1;
+                }
+
+                //short Counter
+                if (leaves[k].status == LEAVE_APPROVED && leaves[k].userID == userid && leaves[k].leaveType == LEAVE_SHORT){
+                    shortCount += 1;
+                }
+            }
+            let remCount = 30 - approvedCount;
+            setRemainingLeaves(remCount);
+            setTakenLeaves(approvedCount);
+            setSickLeaves(sickCount);
+            setShortLeaves(shortCount);
+            // setRemainingLeaves(await remLeaves(leaves));
         }
         else{
             setLeaves([]);
@@ -29,6 +64,7 @@ const UserHome = ({state}) => {
 
     useEffect(() => {
         getAllLeaves().finally();
+
     }, []);
 
     const requestLeave = async (event) => {
@@ -47,12 +83,10 @@ const UserHome = ({state}) => {
         //Creating a object with email & password to post
         const userLeaveData = { userID: userid, leaveType: leaveType, leaveDate: leaveDate};
 
-        // Axios calls ----------------------------------------------------------------------------
+        // Axios calls -----------------------------------------------------------------
         await requestNewLeave(userLeaveData);
         await getAllLeaves();
-
     }
-
 
     return(
         <div class={"content-space main-component"}>
@@ -70,27 +104,26 @@ const UserHome = ({state}) => {
 
                         <Row className="justify-content-md-center block-example border border-dark">
                             <Col className="text-center">
-                                <h1>6</h1>
+                                <h1>{remainingLeaves}</h1>
                                 <p>Remaining Leaves</p>
                             </Col>
 
                             <Col className="text-center">
-                                <h1>6</h1>
+                                <h1>{takenLeaves}</h1>
                                 <p>Taken Leaves</p>
                             </Col>
 
                             <Col className="text-center">
-                                <h1>6</h1>
+                                <h1>{sickLeaves}</h1>
                                 <p>Sick Days Taken</p>
                             </Col>
 
                             <Col className="text-center">
-                                <h1>6</h1>
+                                <h1>{shortLeaves}</h1>
                                 <p>Short Leaves</p>
                             </Col>
 
                         </Row>
-
 
                         <div className={"content-space"}/>
 
@@ -135,9 +168,6 @@ const UserHome = ({state}) => {
                                 </div>
                             </Col>
 
-
-
-
                             {/*leave status*/}
                             <Col className="text-center">
                                 <div className={"block-example border border-dark"}>
@@ -149,26 +179,21 @@ const UserHome = ({state}) => {
                                                 <th>Leave Type</th>
                                                 <th>Leave Date</th>
                                                 <th>Status</th>
-                                                {/*<th>Leaves Taken</th>*/}
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {leaves.map((item)=>
+                                            {leaves.map((item)=> (
                                                 <>
-                                                    {/*{leavesTakenCalculator()}*/}
-                                                    {item.userID === userid && (
+                                                    {item.userID == userid && (
                                                         <tr key = {item.id}>
                                                             <td>LX0{item.id}</td>
-                                                            <td>{item.leaveType === LEAVE_SHORT ? ("Short Leave") : item.leaveType === LEAVE_SICK ? ("Sick Leave") : ("Leave")}</td>
+                                                            <td>{item.leaveType == LEAVE_SHORT ? ("Short Leave") : item.leaveType == LEAVE_SICK ? ("Sick Leave") : ("Leave")}</td>
                                                             <td>{item.leaveDate}</td>
-                                                            <td>{item.status === LEAVE_APPROVED ? ("Approved") : item.status === LEAVE_REJECTED ? ("Rejected") : ("Pending")}</td>
-
-                                                            {/*<td>{leavesTaken}</td>*/}
-                                                            {/*calculate this*/}
+                                                            <td>{item.status == LEAVE_APPROVED ? ("Approved") : item.status == LEAVE_REJECTED ? ("Rejected") : ("Pending")}</td>
 
                                                         </tr>
                                                     )}
-                                                </>
+                                                </>)
                                             )}
                                             </tbody>
                                         </Table>
