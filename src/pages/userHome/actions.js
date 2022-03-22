@@ -22,17 +22,17 @@ export const requestNewLeave = async (userLeaveData) => {
 //calculations
 export const remLeaves = async (leaves) => {
     console.log("-------------------------------------------------------------", leaves);
-    return 69;
+    return 5;
 }
 
 export const takLeaves = async () => {
-    return 69;
+    return 5;
 }
 
 export const sicLeaves = async () => {
-    return 69;
+    return 5;
 }
 
 export const shoLeaves = async () => {
-    return 69;
+    return 5;
 }
