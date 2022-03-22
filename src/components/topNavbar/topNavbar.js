@@ -25,13 +25,11 @@ const TopNavbar = (props) => {
                                 <Nav.Link><Link to="/pendingleaves" style ={{textDecoration:"none"}}>Pending Leaves</Link></Nav.Link>
                                 <Nav.Link><Link to="/rejectedleaves" style ={{textDecoration:"none"}}>Rejected Leaves</Link></Nav.Link>
                                 <Nav.Link><Link to="/approvedleaves" style ={{textDecoration:"none"}}>Approved Leaves</Link></Nav.Link>
-                                <Nav.Link>Help</Nav.Link>
                                 <Nav.Link><Link to="/" style ={{textDecoration:"none"}}>Sign Out</Link></Nav.Link>
                                 </>
                             ) : usertype == EMPLOYEE && (
                                 <>
                                 <Nav.Link><Link to="/userhome" style ={{textDecoration:"none"}}>Home</Link></Nav.Link>
-                                <Nav.Link>Help</Nav.Link>
                                 <Nav.Link><Link to="/" style ={{textDecoration:"none"}}>Sign Out</Link></Nav.Link>
                                 </>
                             )}
